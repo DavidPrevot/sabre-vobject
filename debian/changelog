@@ -1,0 +1,5 @@
+php-sabre-vobject (2.0.7-1) UNRELEASED; urgency=low
+
+  * Initial release. (Closes: #704008)
+
+ -- David Prévot <taffit@debian.org>  Tue, 26 Mar 2013 17:11:05 -0400
