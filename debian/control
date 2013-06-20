@@ -3,7 +3,7 @@ Section: php
 Priority: optional
 Maintainer: ownCloud for Debian maintainers <pkg-owncloud-maintainers@lists.alioth.debian.org>
 Uploaders: David Prévot <taffit@debian.org>
-Build-Depends: debhelper (>= 9)
+Build-Depends: debhelper (>= 9), pkg-php-tools (>= 1.7~), php5-json
 Standards-Version: 3.9.4
 Homepage: https://github.com/fruux/sabre-vobject
 Vcs-Git: git://git.debian.org/pkg-owncloud/php-sabre-vobject.git
@@ -11,7 +11,8 @@ Vcs-Browser: http://git.debian.org/?p=pkg-owncloud/php-sabre-vobject.git;a=summa
 
 Package: php-sabre-vobject
 Architecture: all
-Depends: php5 | php5-cli, ${misc:Depends}
+Depends: ${misc:Depends}, ${phpcomposer:Debian-require}
+Suggests: ${phpcomposer:Debian-suggest}
 Replaces: php-sabredav (<< 1.7)
 Breaks: php-sabredav (<< 1.7)
 Description: library to parse and manipulate iCalendar and vCard objects
