@@ -1,3 +1,13 @@
+php-sabre-vobject (2.1.0-1) experimental; urgency=low
+
+  * New upstream release
+  * Adapt to upstream repository move and versions
+  * Update copyright
+  * Use phpcomposer build helper
+  * Use canonical Vcs- fields
+
+ -- David Prévot <taffit@debian.org>  Thu, 20 Jun 2013 17:17:18 -0400
+
 php-sabre-vobject (2.0.7-1) unstable; urgency=low
 
   * Initial release. (Closes: #704008)
