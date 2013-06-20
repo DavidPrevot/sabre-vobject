@@ -5,7 +5,7 @@ Maintainer: ownCloud for Debian maintainers <pkg-owncloud-maintainers@lists.alio
 Uploaders: David Prévot <taffit@debian.org>
 Build-Depends: debhelper (>= 9)
 Standards-Version: 3.9.4
-Homepage: https://github.com/evert/sabre-vobject
+Homepage: https://github.com/fruux/sabre-vobject
 Vcs-Git: git://git.debian.org/pkg-owncloud/php-sabre-vobject.git
 Vcs-Browser: http://git.debian.org/?p=pkg-owncloud/php-sabre-vobject.git;a=summary
 
