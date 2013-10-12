@@ -7,10 +7,6 @@ Files: *
 Copyright: 2007-2013, fruux GmbH (https://fruux.com/)
 License: BSD-3-clause-Sabre
 
-Files: debian/*
-Copyright: 2013, David Prévot <taffit@debian.org> 
-License: BSD-3-clause-Sabre
-
 License: BSD-3-clause-Sabre
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
