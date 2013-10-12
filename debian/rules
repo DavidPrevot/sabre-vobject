@@ -3,4 +3,4 @@
 	dh $@ --with phpcomposer
 
 get-orig-source:
-	uscan --verbose --rename
+	uscan --verbose --rename --force
