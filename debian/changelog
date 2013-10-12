@@ -1,3 +1,11 @@
+php-sabre-vobject (2.1.3-1) experimental; urgency=low
+
+  * Imported Upstream version 2.1.3
+  * Drop php5-json build-dependency
+  * Do not claim copyright on trivial packaging
+
+ -- David Prévot <taffit@debian.org>  Sat, 12 Oct 2013 18:13:58 -0400
+
 php-sabre-vobject (2.1.0-1) experimental; urgency=low
 
   * New upstream release
