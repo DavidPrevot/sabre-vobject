@@ -4,11 +4,11 @@ namespace Sabre\VObject\Splitter;
 
 use Sabre\VObject;
 
-class ICalendarSplitterTest extends \PHPUnit_Framework_TestCase {
+class ICalendarTest extends \PHPUnit_Framework_TestCase {
 
     protected $version;
 
-    function setup() {
+    function setUp() {
         $this->version = VObject\Version::VERSION;
     }
 
@@ -61,14 +61,14 @@ EOT;
     }
 
     /**
-     * @expectedException        Sabre\VObject\ParseException
+     * @expectedException Sabre\VObject\ParseException
      */
     function testICalendarImportInvalidEvent() {
         $data = <<<EOT
 EOT;
         $tempFile = $this->createStream($data);
-
         $objects = new ICalendar($tempFile);
+
     }
 
     function testICalendarImportMultipleValidEvents() {
