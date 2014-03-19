@@ -2,5 +2,8 @@
 %:
 	dh $@ --with phpcomposer
 
+override_dh_auto_test:
+	cd tests && phpunit
+
 get-orig-source:
 	uscan --verbose --rename --force

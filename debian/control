@@ -3,7 +3,10 @@ Section: php
 Priority: optional
 Maintainer: ownCloud for Debian maintainers <pkg-owncloud-maintainers@lists.alioth.debian.org>
 Uploaders: David Prévot <taffit@debian.org>
-Build-Depends: debhelper (>= 9), pkg-php-tools (>= 1.7~)
+Build-Depends: debhelper (>= 9),
+               php-symfony-classloader,
+               phpunit,
+               pkg-php-tools (>= 1.7~)
 Standards-Version: 3.9.5
 Homepage: https://github.com/fruux/sabre-vobject
 Vcs-Git: git://anonscm.debian.org/pkg-owncloud/php-sabre-vobject.git
