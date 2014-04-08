@@ -13,10 +13,10 @@ Forwarded: not-needed
  1 file changed, 8 insertions(+), 11 deletions(-)
 
 diff --git a/tests/bootstrap.php b/tests/bootstrap.php
-index 3608abe..8cb056a 100644
+index e89e9a2..9d20e1c 100644
 --- a/tests/bootstrap.php
 +++ b/tests/bootstrap.php
-@@ -2,14 +2,11 @@
+@@ -2,17 +2,14 @@
  
  date_default_timezone_set('UTC');
  
@@ -39,3 +39,6 @@ index 3608abe..8cb056a 100644
 +$loader->addPrefixes(array(
 +	'Sabre' => __DIR__.'/../lib',
 +));
+ 
+ if (!defined('SABRE_TEMPDIR')) {
+   define('SABRE_TEMPDIR', __DIR__ . '/temp/');
