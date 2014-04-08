@@ -2,8 +2,13 @@
 %:
 	dh $@ --with phpcomposer
 
+override_dh_auto_clean:
+	rm -rf tests/temp
+	dh_auto_clean
+
 override_dh_auto_test:
 	cd tests && phpunit
+	dh_auto_test
 
 get-orig-source:
 	uscan --verbose --rename --force
