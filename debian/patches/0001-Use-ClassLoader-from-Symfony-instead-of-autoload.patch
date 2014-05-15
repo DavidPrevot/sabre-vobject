@@ -4,9 +4,7 @@ Subject: Use ClassLoader from Symfony instead of autoload
 
 Work around the lack of proper autoload.php from composer by using the
 ClassLoader element from Symfony.
-
 http://symfony.com/doc/current/components/class_loader/class_loader.html
-
 Forwarded: not-needed
 ---
  tests/bootstrap.php | 19 ++++++++-----------
