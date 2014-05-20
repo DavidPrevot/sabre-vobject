@@ -4,6 +4,13 @@ namespace Sabre\VObject;
 
 class TimezoneUtilTest extends \PHPUnit_Framework_TestCase {
 
+    function setUp() {
+
+        // clearning the tz cache
+        TimezoneUtil::$map = null;
+
+    }
+
     /**
      * @dataProvider getMapping
      */
@@ -15,6 +22,8 @@ class TimezoneUtilTest extends \PHPUnit_Framework_TestCase {
     }
 
     function getMapping() {
+
+        TimeZoneUtil::loadTzMaps();
 
         // PHPUNit requires an array of arrays
         return array_map(
@@ -146,7 +155,7 @@ HI;
 
         $tz = TimeZoneUtil::getTimeZone('GMT-0400', null, true);
 
-        if (version_compare(PHP_VERSION, '5.5.10', '>=')) {
+        if (version_compare(PHP_VERSION, '5.5.10', '>=') && !defined('HHVM_VERSION')) {
             $ex = new \DateTimeZone('-04:00');
         } else {
             $ex = new \DateTimeZone('Etc/GMT-4');
@@ -295,7 +304,7 @@ END:VCALENDAR
 HI;
 
         $tz = TimeZoneUtil::getTimeZone('/freeassociation.sourceforge.net/Tzfile/SystemV/EST5EDT', Reader::read($vobj), true);
-        if (version_compare(PHP_VERSION, '5.5.10', '>=')) {
+        if (version_compare(PHP_VERSION, '5.5.10', '>=') && !defined('HHVM_VERSION')) {
             $ex = new \DateTimeZone('America/New_York');
         } else {
             $ex = new \DateTimeZone('EST5EDT');
