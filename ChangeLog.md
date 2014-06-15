@@ -1,8 +1,20 @@
 ChangeLog
 =========
 
+3.2.3 (2014-06-12)
+------------------
+
+* Validator now checks if DUE and DTSTART are of the same type in VTODO, and
+  ensures that DUE is always after DTSTART.
+* Removed documentation from source repository, to http://sabre.io/vobject/
+* Expanded the vobject cli tool validation output to make it easier to find
+  issues.
+* Fixed: vobject repair. It was not working for iCalendar objects.
+
+
 3.2.2 (2014-05-07)
 ------------------
+
 * Minor tweak in unittests to make it run on PHP 5.5.12. Json-prettifying
   slightly changed which caused the test to fail.
 
@@ -40,6 +52,13 @@ ChangeLog
 * Fixed: Issue #83. Creating new VALUE=DATE objects using php's DateTime.
 * Fixed: Issue #86. Don't go into an infinite loop when php errors are
   disabled and an invalid file is read.
+
+
+3.1.5 (2014-??-??)
+------------------
+* Updated: Some docblocks and other documentation. Made the unittests succeed
+  on recent php versions.
+
 
 3.1.4 (2014-03-30)
 ------------------
@@ -223,6 +242,13 @@ ChangeLog
   VERSION and CALSCALE.
 * Added: You can add new sub-components much quicker with the magic setters, and
   add() method.
+
+
+2.1.5 (2014-06-03)
+------------------
+
+* Fixed: #94: Better parameter escaping.
+* Changed: Documentation cleanups.
 
 
 2.1.4 (2014-03-30)
