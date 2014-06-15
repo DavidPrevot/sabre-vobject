@@ -1,3 +1,18 @@
+php-sabre-vobject (3.2.3-1) experimental; urgency=medium
+
+  [ Evert Pot ]
+  * More tests for VTODO.
+  * Moved documentation to sabre.io website.
+  * Bumped version.
+  * More validator output.
+  * repair was unable to do its job for iCalendar objects.
+
+  [ David Prévot ]
+  * No tests if DEB_BUILD_OPTIONS contains nocheck
+  * Remove documentation, moved to http://sabre.io/vobject/
+
+ -- David Prévot <taffit@debian.org>  Sat, 14 Jun 2014 21:50:24 -0400
+
 php-sabre-vobject (3.2.2-1) experimental; urgency=medium
 
   [ Evert Pot ]
