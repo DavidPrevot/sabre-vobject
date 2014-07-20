@@ -13,7 +13,7 @@ use Sabre\VObject\Property;
  * @author Evert Pot (http://evertpot.com/)
  * @license http://sabre.io/license/ Modified BSD License
  */
-class Uri extends Property {
+class Uri extends Text {
 
     /**
      * In case this is a multi-value property. This string will be used as a
@@ -58,7 +58,7 @@ class Uri extends Property {
         // assume that a backslash is always intended as an escape character.
         if ($this->name === 'URL') {
             $regex = '#  (?: (\\\\ (?: \\\\ | : ) ) ) #x';
-            $matches = preg_split($regex, $val, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
+            $matches = preg_split($regex, $val, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
             $newVal = '';
             foreach($matches as $match) {
                 switch($match) {
