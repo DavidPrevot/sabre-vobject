@@ -1,3 +1,14 @@
+php-sabre-vobject (3.2.4-1) experimental; urgency=medium
+
+  [ Evert Pot ]
+  * Bumped version.
+  * Added phpcs.
+
+  [ David Prévot ]
+  * Run phpcs with other tests
+
+ -- David Prévot <taffit@debian.org>  Mon, 21 Jul 2014 14:39:09 -0400
+
 php-sabre-vobject (3.2.3-1) experimental; urgency=medium
 
   [ Evert Pot ]
