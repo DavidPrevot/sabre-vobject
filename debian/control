@@ -4,6 +4,7 @@ Priority: optional
 Maintainer: ownCloud for Debian maintainers <pkg-owncloud-maintainers@lists.alioth.debian.org>
 Uploaders: David Prévot <taffit@debian.org>
 Build-Depends: debhelper (>= 9),
+               php-codesniffer,
                php-symfony-classloader,
                phpunit,
                pkg-php-tools (>= 1.7~)
