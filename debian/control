@@ -18,13 +18,13 @@ Package: php-sabre-vobject
 Architecture: all
 Depends: ${misc:Depends}, ${phpcomposer:Debian-require}
 Suggests: ${phpcomposer:Debian-suggest}
-Replaces: php-sabredav (<< 1.7)
-Breaks: php-sabredav (<< 1.7)
+Replaces: ${phpcomposer:Debian-replace}
+Breaks: ${phpcomposer:Debian-conflict}, ${phpcomposer:Debian-replace}
+Provides: ${phpcomposer:Debian-provide}
 Description: library to parse and manipulate iCalendar and vCard objects
- The SabreTooth VObject library allows one to easily parse and
- manipulate iCalendar and vCard objects using PHP. The goal of the
- VObject library is to create a very complete library, with an easy to
- use API.
+ ${phpcomposer:description}.
+ The goal of the VObject library is to create a very complete library,
+ with an easy to use API.
  .
  This project is a spin-off from SabreDAV, where it has been used for
  several years.

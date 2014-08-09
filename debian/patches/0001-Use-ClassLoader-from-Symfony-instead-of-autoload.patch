@@ -4,17 +4,19 @@ Subject: Use ClassLoader from Symfony instead of autoload
 
 Work around the lack of proper autoload.php from composer by using the
 ClassLoader element from Symfony.
+
 http://symfony.com/doc/current/components/class_loader/class_loader.html
+
 Forwarded: not-needed
 ---
- tests/bootstrap.php | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ tests/bootstrap.php | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
 diff --git a/tests/bootstrap.php b/tests/bootstrap.php
-index e89e9a2..9d20e1c 100644
+index e89e9a2..46ff855 100644
 --- a/tests/bootstrap.php
 +++ b/tests/bootstrap.php
-@@ -2,17 +2,14 @@
+@@ -2,17 +2,15 @@
  
  date_default_timezone_set('UTC');
  
@@ -35,7 +37,8 @@ index e89e9a2..9d20e1c 100644
 +$loader->setUseIncludePath(true);
 +$loader->register();
 +$loader->addPrefixes(array(
-+	'Sabre' => __DIR__.'/../lib',
++// ClassLoader does not yet support PSR-4
++//	'Sabre' => __DIR__.'/../lib',
 +));
  
  if (!defined('SABRE_TEMPDIR')) {

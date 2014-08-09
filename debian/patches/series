@@ -1,1 +1,2 @@
 0001-Use-ClassLoader-from-Symfony-instead-of-autoload.patch
+0002-Subject-Workaround-the-lack-of-PSR-4-support.patch

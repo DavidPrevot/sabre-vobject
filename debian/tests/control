@@ -3,4 +3,4 @@ Depends: @, php-codesniffer
 
 Tests: phpunit
 Restrictions: rw-build-tree
-Depends: @, patch, php-symfony-classloader, phpunit
+Depends: @, php-symfony-classloader, phpunit, quilt
