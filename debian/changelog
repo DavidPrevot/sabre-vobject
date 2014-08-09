@@ -1,3 +1,21 @@
+php-sabre-vobject (3.3.0-1) experimental; urgency=medium
+
+  [ Evert Pot ]
+  * First strides into iTip related functionality.
+  * The first event can now be overwritten.
+  * Moving recurrence-related code to Recur/ directory.
+  * Switched to psr-4
+  * Added the RDate iterator
+  * Backwards compatibility class for RecurrenceIterator.
+
+  [ David Prévot ]
+  * Update packaging
+
+  [ Armin Hackmann ]
+  * keep time & timezone information for recurring events, fix for #101
+
+ -- David Prévot <taffit@debian.org>  Sat, 09 Aug 2014 10:54:11 -0400
+
 php-sabre-vobject (3.2.4-1) experimental; urgency=medium
 
   [ Evert Pot ]
