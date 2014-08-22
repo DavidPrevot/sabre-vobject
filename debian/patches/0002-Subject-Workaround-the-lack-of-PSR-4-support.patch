@@ -3,15 +3,25 @@ Date: Fri, 8 Aug 2014 22:07:08 -0400
 Subject: Subject: Workaround the lack of PSR-4 support
 
 ---
+ Sabre/VObject       | 1 +
  tests/Sabre/VObject | 1 +
- 1 file changed, 1 insertion(+)
+ 2 files changed, 2 insertions(+)
+ create mode 120000 Sabre/VObject
  create mode 120000 tests/Sabre/VObject
 
+diff --git a/Sabre/VObject b/Sabre/VObject
+new file mode 120000
+index 0000000..dc598c5
+--- /dev/null
++++ b/Sabre/VObject
+@@ -0,0 +1 @@
++../lib
+\ No newline at end of file
 diff --git a/tests/Sabre/VObject b/tests/Sabre/VObject
 new file mode 120000
-index 0000000..58677dd
+index 0000000..8aa194c
 --- /dev/null
 +++ b/tests/Sabre/VObject
 @@ -0,0 +1 @@
-+../../lib
++../VObject
 \ No newline at end of file
