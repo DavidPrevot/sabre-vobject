@@ -38,4 +38,24 @@ class CalAddress extends Text {
 
     }
 
+    /**
+     * This returns a normalized form of the value.
+     *
+     * This is primarily used right now to turn mixed-cased schemes in user
+     * uris to lower-case.
+     *
+     * Evolution in particular tends to encode mailto: as MAILTO:.
+     *
+     * @return string
+     */
+    public function getNormalizedValue() {
+
+        $input = $this->getValue();
+        if (!strpos($input, ':')) {
+            return $input;
+        }
+        list($schema, $everythingElse) = explode(':', $input, 2);
+        return strtolower($schema) . ':' . $everythingElse;
+
+    }
 }
