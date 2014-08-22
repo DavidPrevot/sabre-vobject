@@ -106,7 +106,7 @@ class EventIterator implements \Iterator {
             // No base event was found. CalDAV does allow cases where only
             // overridden instances are stored.
             //
-            // In this barticular case, we're just going to grab the first
+            // In this particular case, we're just going to grab the first
             // event and use that instead. This may not always give the
             // desired result.
             if (!count($this->overriddenEvents)) {
@@ -247,7 +247,8 @@ class EventIterator implements \Iterator {
             $event->RRULE,
             $event->EXDATE,
             $event->RDATE,
-            $event->EXRULE
+            $event->EXRULE,
+            $event->{'RECURRENCE-ID'}
         );
         // @codeCoverageIgnoreEnd
 
@@ -256,7 +257,7 @@ class EventIterator implements \Iterator {
             $event->DTEND->setDateTime($this->getDtEnd());
         }
         if ($this->recurIterator->key() > 0) {
-            $event->{'RECURRENCE-ID'} = (string)$event->DTSTART;
+            $event->add('RECURRENCE-ID', $event->DTSTART->getDateTime());
         }
         return $event;
 
