@@ -1,4 +1,4 @@
-php-sabre-vobject (3.3.0-1) experimental; urgency=medium
+php-sabre-vobject (3.3.1-1) experimental; urgency=medium
 
   [ Evert Pot ]
   * First strides into iTip related functionality.
@@ -7,14 +7,18 @@ php-sabre-vobject (3.3.0-1) experimental; urgency=medium
   * Switched to psr-4
   * Added the RDate iterator
   * Backwards compatibility class for RecurrenceIterator.
-
-  [ David Prévot ]
-  * Update packaging
+  * Allow more values to be used with magic setters.
+  * Retaining VTIMEZONE objects. Support for MAILTO: in uppercase.
+  * Support for REQUEST-STATUS.
+  * Releasing vobject 3.3.1
 
   [ Armin Hackmann ]
   * keep time & timezone information for recurring events, fix for #101
 
- -- David Prévot <taffit@debian.org>  Sat, 09 Aug 2014 10:54:11 -0400
+  [ David Prévot ]
+  * Update packaging
+
+ -- David Prévot <taffit@debian.org>  Fri, 22 Aug 2014 10:27:35 -0400
 
 php-sabre-vobject (3.2.4-1) experimental; urgency=medium
 
