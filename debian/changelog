@@ -1,3 +1,33 @@
+php-sabre-vobject (3.3.2-1) experimental; urgency=medium
+
+  [ Evert Pot ]
+  * Updating RSVP status when a reply comes in.
+  * Support for detecting significant changes in iTip objects.
+  * Support for SCHEDULE-FORCE-SEND
+  * When a parameter value contains +, quote the value.
+  * Don't generate REPLY messages for events that have been CANCELLED.
+  * We're validating RELATED but it should have been RELATED-TO.
+  * ATTACH is a URI value, unless it's specified as BINARY.
+  * Throw exception when there are no recurrence instances.
+  * No longer generate another DECLINE when an attendee deletes
+    an already declined event.
+  * Send CANCEL messages when ORGANIZER property gets deleted.
+
+  [ Dominik Tobschall ]
+  * added getScheduleStatus() method
+  * SUMMARY in scheduling messages. #123
+  * reject vcards in icalendar splitter
+  * reject non-vcard data in vcard splitter
+
+  [ Thorsten Glaser ]
+  * check all control chars from RFC5545 §3.3.11. (below \x80, anyway)
+
+  [ David Prévot ]
+  * Simplify DEP-8 handling
+  * Bump standards version to 3.9.6
+
+ -- David Prévot <taffit@debian.org>  Mon, 22 Sep 2014 22:47:58 -0400
+
 php-sabre-vobject (3.3.1-1) experimental; urgency=medium
 
   [ Evert Pot ]
