@@ -1,2 +1,0 @@
-#! /bin/sh
-phpcs -v --standard=tests/phpcs/ruleset.xml /usr/share/php/Sabre/VObject

@@ -1,6 +1,6 @@
-Tests: phpcs
+Test-Command: phpcs -v --standard=tests/phpcs/ruleset.xml /usr/share/php/Sabre/VObject
 Depends: @, php-codesniffer
 
-Tests: phpunit
+Test-Command: cd tests && phpunit
 Restrictions: rw-build-tree
 Depends: @, php-symfony-classloader, phpunit
