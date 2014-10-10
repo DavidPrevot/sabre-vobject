@@ -178,6 +178,7 @@ class Broker {
             $oldEventInfo = $this->parseEventInfo($oldCalendar);
         } else {
             $oldEventInfo = array(
+                'organizer' => null,
                 'significantChangeHash' => '',
                 'attendees' => array(),
             );
@@ -200,10 +201,14 @@ class Broker {
                 // we don't need to do anything.
                 return array();
             }
+            if (!$eventInfo['organizer'] && !$oldEventInfo['organizer']) {
+                // There was no organizer before or after the change.
+                return array();
+            }
 
             $baseCalendar = $calendar;
 
-            // If the new object didn't have an organizer, the origanizer
+            // If the new object didn't have an organizer, the organizer
             // changed the object from a scheduling object to a non-scheduling
             // object. We just copy the info from the old object.
             if (!$eventInfo['organizer'] && $oldEventInfo['organizer']) {
@@ -518,6 +523,7 @@ class Broker {
                 if (isset($calendar->VEVENT->SUMMARY)) {
                     $event->add('SUMMARY', $calendar->VEVENT->SUMMARY->getValue());
                 }
+                $event->add(clone $calendar->VEVENT->DTSTART);
                 $org = $event->add('ORGANIZER', $eventInfo['organizer']);
                 if ($eventInfo['organizerName']) $org['CN'] = $eventInfo['organizerName'];
                 $event->add('ATTENDEE', $attendee['href'], array(
@@ -539,7 +545,7 @@ class Broker {
                 }
 
                 // We need to find out that this change is significant. If it's
-                // not, systems may op to not send messages.
+                // not, systems may opt to not send messages.
                 //
                 // We do this based on the 'significantChangeHash' which is
                 // some value that changes if there's a certain set of
@@ -586,6 +592,13 @@ class Broker {
                         foreach($currentEvent->ATTENDEE as $attendee) {
                             unset($attendee['SCHEDULE-FORCE-SEND']);
                             unset($attendee['SCHEDULE-STATUS']);
+
+                            // We're adding PARTSTAT=NEEDS-ACTION to ensure that
+                            // iOS shows an "Inbox Item"
+                            if (!isset($attendee['PARTSTAT'])) {
+                                $attendee['PARTSTAT'] = 'NEEDS-ACTION';
+                            }
+
                         }
 
                     }
@@ -617,6 +630,10 @@ class Broker {
      * @return Message[]
      */
     protected function parseEventForAttendee(VCalendar $calendar, array $eventInfo, array $oldEventInfo, $attendee) {
+
+        if ($this->scheduleAgentServerRules && $eventInfo['organizerScheduleAgent']==='CLIENT') {
+            return array();
+        }
 
         // Don't bother generating messages for events that have already been
         // cancelled.
@@ -671,6 +688,17 @@ class Broker {
             }
         }
 
+        // Gathering a few extra properties for each instance.
+        foreach($instances as $recurId=>$instanceInfo) {
+
+            if (isset($eventInfo['instances'][$recurId])) {
+                $instances[$recurId]['dtstart'] = clone $eventInfo['instances'][$recurId]->DTSTART;
+            } else {
+                $instances[$recurId]['dtstart'] = $recurId;
+            }
+
+        }
+
         $message = new Message();
         $message->uid = $eventInfo['uid'];
         $message->method = 'REPLY';
@@ -697,11 +725,36 @@ class Broker {
                 'UID' => $message->uid,
                 'SEQUENCE' => $message->sequence,
             ));
-            if (isset($calendar->VEVENT->SUMMARY)) {
-                $event->add('SUMMARY', $calendar->VEVENT->SUMMARY->getValue());
+            $summary = isset($calendar->VEVENT->SUMMARY)?$calendar->VEVENT->SUMMARY->getValue():'';
+            // Adding properties from the correct source instance
+            if (isset($eventInfo['instances'][$instance['id']])) {
+                $instanceObj = $eventInfo['instances'][$instance['id']];
+                $event->add(clone $instanceObj->DTSTART);
+                if (isset($instanceObj->SUMMARY)) {
+                    $event->add('SUMMARY', $instanceObj->SUMMARY->getValue());
+                } elseif ($summary) {
+                    $event->add('SUMMARY', $summary);
+                }
+            } else {
+                $dt = DateTimeParser::parse($instance['id'], $eventInfo['timezone']);
+                // Treat is as a DATE field
+                if (strlen($instance['id']) <= 8) {
+                    $recur = $event->add('DTSTART', $dt, array('VALUE' => 'DATE'));
+                } else {
+                    $recur = $event->add('DTSTART', $dt);
+                }
+                if ($summary) {
+                    $event->add('SUMMARY', $summary);
+                }
             }
             if ($instance['id'] !== 'master') {
-                $event->{'RECURRENCE-ID'} = DateTimeParser::parseDateTime($instance['id'], $eventInfo['timezone']);
+                $dt = DateTimeParser::parse($instance['id'], $eventInfo['timezone']);
+                // Treat is as a DATE field
+                if (strlen($instance['id']) <= 8) {
+                    $recur = $event->add('RECURRENCE-ID', $dt, array('VALUE' => 'DATE'));
+                } else {
+                    $recur = $event->add('RECURRENCE-ID', $dt);
+                }
             }
             $organizer = $event->add('ORGANIZER', $message->recipient);
             if ($message->recipientName) {
@@ -750,6 +803,7 @@ class Broker {
         $sequence = null;
         $timezone = null;
         $status = null;
+        $organizerScheduleAgent = 'SERVER';
 
         $significantChangeHash = '';
 
@@ -787,6 +841,10 @@ class Broker {
                     isset($vevent->ORGANIZER['SCHEDULE-FORCE-SEND']) ?
                     strtoupper($vevent->ORGANIZER['SCHEDULE-FORCE-SEND']) :
                     null;
+                $organizerScheduleAgent =
+                    isset($vevent->ORGANIZER['SCHEDULE-AGENT']) ?
+                    strtoupper((string)$vevent->ORGANIZER['SCHEDULE-AGENT']) :
+                    'SERVER';
             }
             if (is_null($sequence) && isset($vevent->SEQUENCE)) {
                 $sequence = $vevent->SEQUENCE->getValue();
@@ -863,6 +921,7 @@ class Broker {
             'uid',
             'organizer',
             'organizerName',
+            'organizerScheduleAgent',
             'organizerForceSend',
             'instances',
             'attendees',

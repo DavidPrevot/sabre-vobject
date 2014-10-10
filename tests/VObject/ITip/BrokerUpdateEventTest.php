@@ -2,7 +2,7 @@
 
 namespace Sabre\VObject\ITip;
 
-class BrokerUpdateTest extends \PHPUnit_Framework_TestCase {
+class BrokerUpdateTest extends BrokerTester {
 
     function testInviteChange() {
 
@@ -14,7 +14,7 @@ UID:foobar
 SEQUENCE:1
 SUMMARY:foo
 ORGANIZER;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=Strunk:mailto:strunk@example.org
+ATTENDEE;CN=Strunk;PARTSTAT=ACCEPTED:mailto:strunk@example.org
 ATTENDEE;CN=One:mailto:one@example.org
 ATTENDEE;CN=Two:mailto:two@example.org
 DTSTART:20140716T120000Z
@@ -31,7 +31,7 @@ UID:foobar
 SEQUENCE:2
 SUMMARY:foo
 ORGANIZER;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=Strunk:mailto:strunk@example.org
+ATTENDEE;CN=Strunk;PARTSTAT=ACCEPTED:mailto:strunk@example.org
 ATTENDEE;CN=Two:mailto:two@example.org
 ATTENDEE;CN=Three:mailto:three@example.org
 DTSTART:20140716T120000Z
@@ -61,6 +61,7 @@ BEGIN:VEVENT
 UID:foobar
 SEQUENCE:2
 SUMMARY:foo
+DTSTART:20140716T120000Z
 ORGANIZER;CN=Strunk:mailto:strunk@example.org
 ATTENDEE;CN=One:mailto:one@example.org
 END:VEVENT
@@ -88,9 +89,9 @@ UID:foobar
 SEQUENCE:2
 SUMMARY:foo
 ORGANIZER;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=Two:mailto:two@example.org
-ATTENDEE;CN=Three:mailto:three@example.org
+ATTENDEE;CN=Strunk;PARTSTAT=ACCEPTED:mailto:strunk@example.org
+ATTENDEE;CN=Two;PARTSTAT=NEEDS-ACTION:mailto:two@example.org
+ATTENDEE;CN=Three;PARTSTAT=NEEDS-ACTION:mailto:three@example.org
 DTSTART:20140716T120000Z
 END:VEVENT
 END:VCALENDAR
@@ -117,9 +118,9 @@ UID:foobar
 SEQUENCE:2
 SUMMARY:foo
 ORGANIZER;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=Two:mailto:two@example.org
-ATTENDEE;CN=Three:mailto:three@example.org
+ATTENDEE;CN=Strunk;PARTSTAT=ACCEPTED:mailto:strunk@example.org
+ATTENDEE;CN=Two;PARTSTAT=NEEDS-ACTION:mailto:two@example.org
+ATTENDEE;CN=Three;PARTSTAT=NEEDS-ACTION:mailto:three@example.org
 DTSTART:20140716T120000Z
 END:VEVENT
 END:VCALENDAR
@@ -128,7 +129,7 @@ ICS
             ),
         );
 
-        $result = $this->parse($oldMessage, $newMessage, $expected);
+        $this->parse($oldMessage, $newMessage, $expected, 'mailto:strunk@example.org');
 
     }
 
@@ -180,7 +181,7 @@ BEGIN:VEVENT
 UID:foobar
 SEQUENCE:2
 ORGANIZER;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=One:mailto:one@example.org
+ATTENDEE;CN=One;PARTSTAT=NEEDS-ACTION:mailto:one@example.org
 DTSTART:20140716T120000Z
 END:VEVENT
 END:VCALENDAR
@@ -190,7 +191,65 @@ ICS
 
         );
 
-        $result = $this->parse($oldMessage, $newMessage, $expected);
+        $this->parse($oldMessage, $newMessage, $expected, 'mailto:strunk@example.org');
+
+    }
+
+    function testInviteChangeFromSchedulingToNonSchedulingObject() {
+
+        $oldMessage = <<<ICS
+BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+UID:foobar
+SEQUENCE:2
+ORGANIZER;CN=Strunk:mailto:strunk@example.org
+ATTENDEE;CN=One:mailto:one@example.org
+DTSTART:20140716T120000Z
+END:VEVENT
+END:VCALENDAR
+ICS;
+
+
+        $newMessage = <<<ICS
+BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+UID:foobar
+SEQUENCE:1
+DTSTART:20140716T120000Z
+END:VEVENT
+END:VCALENDAR
+ICS;
+
+        $version = \Sabre\VObject\Version::VERSION;
+
+        $expected = array(
+            array(
+                'uid' => 'foobar',
+                'method' => 'CANCEL',
+                'component' => 'VEVENT',
+                'message' => <<<ICS
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Sabre//Sabre VObject $version//EN
+CALSCALE:GREGORIAN
+METHOD:CANCEL
+BEGIN:VEVENT
+UID:foobar
+SEQUENCE:1
+DTSTART:20140716T120000Z
+ORGANIZER;CN=Strunk:mailto:strunk@example.org
+ATTENDEE;CN=One:mailto:one@example.org
+END:VEVENT
+END:VCALENDAR
+ICS
+
+            ),
+
+        );
+
+        $this->parse($oldMessage, $newMessage, $expected, 'mailto:strunk@example.org');
 
     }
 
@@ -222,7 +281,7 @@ ICS;
         $version = \Sabre\VObject\Version::VERSION;
 
         $expected = array();
-        $result = $this->parse($oldMessage, $newMessage, $expected);
+        $this->parse($oldMessage, $newMessage, $expected, 'mailto:strunk@example.org');
 
     }
 
@@ -279,7 +338,7 @@ BEGIN:VEVENT
 UID:foobar
 SEQUENCE:2
 ORGANIZER;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=One:mailto:one@example.org
+ATTENDEE;CN=One;PARTSTAT=NEEDS-ACTION:mailto:one@example.org
 DTSTART;TZID=America/Toronto:20140716T120000
 RRULE:FREQ=WEEKLY
 EXDATE;TZID=America/Toronto:20140724T120000
@@ -290,7 +349,7 @@ ICS
             ),
         );
 
-        $result = $this->parse($oldMessage, $newMessage, $expected);
+        $this->parse($oldMessage, $newMessage, $expected, 'mailto:strunk@example.org');
 
     }
 
@@ -310,7 +369,7 @@ UID:foobar
 DURATION:PT1H
 SEQUENCE:1
 ORGANIZER;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=Strunk:mailto:strunk@example.org
+ATTENDEE;CN=Strunk;PARTSTAT=ACCEPTED:mailto:strunk@example.org
 ATTENDEE;CN=One:mailto:one@example.org
 ATTENDEE;CN=Two:mailto:two@example.org
 DTSTART:20140716T120000Z
@@ -327,7 +386,7 @@ UID:foobar
 DURATION:PT2H
 SEQUENCE:2
 ORGANIZER;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=Strunk:mailto:strunk@example.org
+ATTENDEE;CN=Strunk;PARTSTAT=ACCEPTED:mailto:strunk@example.org
 ATTENDEE;CN=Two:mailto:two@example.org
 ATTENDEE;CN=Three:mailto:three@example.org
 DTSTART:20140716T120000Z
@@ -356,6 +415,7 @@ METHOD:CANCEL
 BEGIN:VEVENT
 UID:foobar
 SEQUENCE:2
+DTSTART:20140716T120000Z
 ORGANIZER;CN=Strunk:mailto:strunk@example.org
 ATTENDEE;CN=One:mailto:one@example.org
 END:VEVENT
@@ -383,9 +443,9 @@ UID:foobar
 DURATION:PT2H
 SEQUENCE:2
 ORGANIZER;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=Two:mailto:two@example.org
-ATTENDEE;CN=Three:mailto:three@example.org
+ATTENDEE;CN=Strunk;PARTSTAT=ACCEPTED:mailto:strunk@example.org
+ATTENDEE;CN=Two;PARTSTAT=NEEDS-ACTION:mailto:two@example.org
+ATTENDEE;CN=Three;PARTSTAT=NEEDS-ACTION:mailto:three@example.org
 DTSTART:20140716T120000Z
 END:VEVENT
 END:VCALENDAR
@@ -412,9 +472,9 @@ UID:foobar
 DURATION:PT2H
 SEQUENCE:2
 ORGANIZER;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=Two:mailto:two@example.org
-ATTENDEE;CN=Three:mailto:three@example.org
+ATTENDEE;CN=Strunk;PARTSTAT=ACCEPTED:mailto:strunk@example.org
+ATTENDEE;CN=Two;PARTSTAT=NEEDS-ACTION:mailto:two@example.org
+ATTENDEE;CN=Three;PARTSTAT=NEEDS-ACTION:mailto:three@example.org
 DTSTART:20140716T120000Z
 END:VEVENT
 END:VCALENDAR
@@ -423,7 +483,7 @@ ICS
             ),
         );
 
-        $result = $this->parse($oldMessage, $newMessage, $expected);
+        $this->parse($oldMessage, $newMessage, $expected, 'mailto:strunk@example.org');
 
     }
 
@@ -436,7 +496,7 @@ BEGIN:VEVENT
 UID:foobar
 SEQUENCE:1
 ORGANIZER;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=Strunk:mailto:strunk@example.org
+ATTENDEE;CN=Strunk;PARTSTAT=ACCEPTED:mailto:strunk@example.org
 ATTENDEE;CN=One:mailto:one@example.org
 DTSTART:20140716T120000Z
 END:VEVENT
@@ -451,7 +511,7 @@ BEGIN:VEVENT
 UID:foobar
 SEQUENCE:2
 ORGANIZER;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=Strunk:mailto:strunk@example.org
+ATTENDEE;CN=Strunk;PARTSTAT=ACCEPTED:mailto:strunk@example.org
 ATTENDEE;CN=One:mailto:one@example.org
 DTSTART:20140716T120000Z
 END:VEVENT
@@ -480,8 +540,8 @@ BEGIN:VEVENT
 UID:foobar
 SEQUENCE:2
 ORGANIZER;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=One:mailto:one@example.org
+ATTENDEE;CN=Strunk;PARTSTAT=ACCEPTED:mailto:strunk@example.org
+ATTENDEE;CN=One;PARTSTAT=NEEDS-ACTION:mailto:one@example.org
 DTSTART:20140716T120000Z
 END:VEVENT
 END:VCALENDAR
@@ -491,7 +551,7 @@ ICS
 
         );
 
-        $result = $this->parse($oldMessage, $newMessage, $expected);
+        $this->parse($oldMessage, $newMessage, $expected, 'mailto:strunk@example.org');
 
     }
 
@@ -504,7 +564,7 @@ BEGIN:VEVENT
 UID:foobar
 SEQUENCE:1
 ORGANIZER;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=Strunk:mailto:strunk@example.org
+ATTENDEE;CN=Strunk;PARTSTAT=ACCEPTED:mailto:strunk@example.org
 ATTENDEE;CN=One:mailto:one@example.org
 DTSTART:20140716T120000Z
 END:VEVENT
@@ -519,7 +579,7 @@ BEGIN:VEVENT
 UID:foobar
 SEQUENCE:2
 ORGANIZER;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=Strunk:mailto:strunk@example.org
+ATTENDEE;CN=Strunk;PARTSTAT=ACCEPTED:mailto:strunk@example.org
 ATTENDEE;SCHEDULE-FORCE-SEND=REQUEST;CN=One:mailto:one@example.org
 DTSTART:20140716T120000Z
 END:VEVENT
@@ -548,8 +608,8 @@ BEGIN:VEVENT
 UID:foobar
 SEQUENCE:2
 ORGANIZER;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=Strunk:mailto:strunk@example.org
-ATTENDEE;CN=One:mailto:one@example.org
+ATTENDEE;CN=Strunk;PARTSTAT=ACCEPTED:mailto:strunk@example.org
+ATTENDEE;CN=One;PARTSTAT=NEEDS-ACTION:mailto:one@example.org
 DTSTART:20140716T120000Z
 END:VEVENT
 END:VCALENDAR
@@ -559,35 +619,7 @@ ICS
 
         );
 
-        $result = $this->parse($oldMessage, $newMessage, $expected);
-
-    }
-
-    function parse($oldMessage, $newMessage, $expected = array()) {
-
-        $broker = new Broker();
-        $result = $broker->parseEvent($newMessage, 'mailto:strunk@example.org', $oldMessage);
-
-        $this->assertEquals(count($expected), count($result));
-
-        foreach($expected as $index=>$ex) {
-
-            $message = $result[$index];
-
-            foreach($ex as $key=>$val) {
-
-                if ($key==='message') {
-                    $this->assertEquals(
-                        str_replace("\n", "\r\n", $val),
-                        rtrim($message->message->serialize(), "\r\n")
-                    );
-                } else {
-                    $this->assertEquals($val, $message->$key);
-                }
-
-            }
-
-        }
+        $this->parse($oldMessage, $newMessage, $expected, 'mailto:strunk@example.org');
 
     }
 
@@ -644,6 +676,7 @@ BEGIN:VEVENT
 UID:foobar
 SEQUENCE:2
 SUMMARY:foo
+DTSTART:20140716T120000Z
 ORGANIZER;CN=Strunk:mailto:strunk@example.org
 ATTENDEE;CN=One:mailto:one@example.org
 END:VEVENT
@@ -670,6 +703,7 @@ BEGIN:VEVENT
 UID:foobar
 SEQUENCE:2
 SUMMARY:foo
+DTSTART:20140716T120000Z
 ORGANIZER;CN=Strunk:mailto:strunk@example.org
 ATTENDEE;CN=Two:mailto:two@example.org
 END:VEVENT
@@ -679,7 +713,7 @@ ICS
             ),
         );
 
-        $result = $this->parse($oldMessage, $newMessage, $expected);
+        $result = $this->parse($oldMessage, $newMessage, $expected, 'mailto:strunk@example.org');
 
     }
 }
