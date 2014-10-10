@@ -1,3 +1,12 @@
+php-sabre-vobject (3.3.3-1) experimental; urgency=medium
+
+  [ Evert Pot ]
+  * Adding DTSTART to CANCEL and REPLY messages.
+  * Respect SCHEDULE-AGENT on ORGANIZER.
+  * There's a new windows timezone.
+
+ -- David Prévot <taffit@debian.org>  Fri, 10 Oct 2014 10:00:42 -0400
+
 php-sabre-vobject (3.3.2-1) experimental; urgency=medium
 
   [ Evert Pot ]
