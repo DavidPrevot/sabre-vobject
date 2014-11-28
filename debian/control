@@ -5,7 +5,7 @@ Maintainer: ownCloud for Debian maintainers <pkg-owncloud-maintainers@lists.alio
 Uploaders: David Prévot <taffit@debian.org>
 Build-Depends: debhelper (>= 9),
                php-codesniffer,
-               php-symfony-classloader,
+               php-symfony-class-loader,
                phpunit,
                pkg-php-tools (>= 1.7~)
 Standards-Version: 3.9.6

@@ -3,4 +3,4 @@ Depends: @, php-codesniffer
 
 Test-Command: cd tests && phpunit
 Restrictions: rw-build-tree
-Depends: @, php-symfony-classloader, phpunit
+Depends: @, php-symfony-class-loader, phpunit
