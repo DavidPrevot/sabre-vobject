@@ -1,3 +1,22 @@
+php-sabre-vobject (3.3.4-1) experimental; urgency=medium
+
+  [ Evert Pot ]
+  * Support for converting ANNIVERSARY
+  * Allowing 'reference timezones' for freebusy reports and other places.
+  * Reference timezone to expander and recurrence iterator.
+  * Added getTimeZone to VTIMEZONE components.
+
+  [ Armin Hackmann ]
+  * Support for multiple anniversaries in a vCard
+
+  [ Ivan Enderlin ]
+  * Simpler way to check UTF-8.
+
+  [ David Prévot ]
+  * Use php-symfony-class-loader instead of php-symfony-classloader
+
+ -- David Prévot <taffit@debian.org>  Fri, 28 Nov 2014 16:42:28 -0400
+
 php-sabre-vobject (3.3.3-1) experimental; urgency=medium
 
   [ Evert Pot ]
